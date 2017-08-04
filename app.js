@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var child_process = require('child_process');
-var fs = require('fs')
+var fs = require('fs');
 
 // ミドルウェアとurlエンコードの設定
 app.use(express.static('public'));
@@ -54,7 +54,7 @@ app.post('/api/run', function(req, res) {
 
   // コードをコンテナにコピー
   child_process.execSync('rm -rf /tmp/workspace && mkdir /tmp/workspace && chmod 777 /tmp/workspace');
-  fs.writeFileSync('/tmp/workspace' + filename, source_code);
+  fs.writeFileSync('/tmp/workspace/' + filename, source_code);
   dockerCmd = 'docker cp /tmp/workspace ' + containerId + ':/';
   console.log("Running: " + dockerCmd);
   child_process.execSync(dockerCmd);
@@ -65,7 +65,7 @@ app.post('/api/run', function(req, res) {
   var child = child_process.exec(dockerCmd, {}, function(error, stdout, stderr){
 
     // 実行時間のコピー
-    dockerCmd = "docker cp " + containerId + ":/time.txt /tmp/time.txt";
+    dockerCmd = "docker cp " + containerId + ":/time.txt /tmp/";
     console.log("Running: " + dockerCmd);
     child_process.execSync(dockerCmd);
     var time = fs.readFileSync("/tmp/time.txt").toString();
