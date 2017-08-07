@@ -5,8 +5,9 @@ function runCode()
   var language = $("#language").val();
   var source_code = aceEditor.getValue();
   var input = $("#input").val();
+
   $.ajax({
-    url: "url/run",
+    url: "api/run",
     method: "POST",
     data: {
       language: language,
